@@ -15,10 +15,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-docs = [
-    "zensical>=0.0.40"
-    "mkdocs-material>=9.5.0",
-]
+docs = ["zensical>=0.0.40", "mkdocs-material>=9.5.0"]
 
 [build-system]
 requires = ["hatchling"]
