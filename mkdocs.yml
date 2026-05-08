@@ -1,0 +1,64 @@
+site_name: "Project Janus: Synapse Edge"
+site_description: "Enterprise-grade autonomous AI cluster GitOps documentation"
+repo_url: "https://github.com/YOUR_USERNAME/janus-synapse-edge" # Update with your actual URL
+
+theme:
+  name: material
+  palette:
+    # Scheme for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: deep orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+        # Scheme for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: black
+      accent: deep orange
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - toc.integrate
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+    anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - tables
+  - toc:
+    permalink: true
+
+nav:
+  - Home: index.md
+  - Pre-Requisites:
+    - "Safe-Stack Preparation": '🛠️ Preparation_ The _Safe-Stack_ Configuration.md'
+  - Core Architecture:
+    - "00. Architecture & Constraints": '00. Architecture Overview & Constraints Strategy.md'
+    - "01. Physical Assembly & Security": '01. Physical Assembly, BIOS & Bare-Metal Security.md'
+    - "02. Proxmox & ZFS Encryption": '02. Proxmox Base Installation & ZFS Encryption.md'
+    - "03. Hypervisor Optimization": '03. Proxmox Kernel & Hypervisor Optimization.md'
+    - "04. Virtualization (Talos & K3s)": '04. Virtualization & Kubernetes (Talos + K3s).md'
+  - The AI Engines:
+    - "05. Core Inference Deployment": '05. Core AI Inference Deployment (The Dual-Engine).md'
+    - "06. Data Layer & Memory": '06. Data Layer & Memory Substrate.md'
+    - "07. API Gateway & Network DMZ": '07. API Gateway, Orchestration & Network Firewall.md'
+  - Autonomy & Operations:
+    - "08. Agent Workflows & UI": '08. Agent Workflows & UI Layer.md'
+    - "09. The Idle-Loop & Dreaming": '09. The Autonomous Dynamic _Idle-Loop_ & _Dreaming.md'
+    - "10. Observability & GitOps": '10. Observability, Telemetry & GitOps.md'
+    - "11. Disaster Recovery": '11. Disaster Recovery & Automated Healing.md'
+    - "12. Multi-Tenant Profiles": '12. Multi-Tenant Profiles & Privacy Tiers.md'

@@ -1,0 +1,81 @@
+--- Python & Environment ---
+
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+.python-version
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+--- uv & Package Management ---
+
+.uv/
+# uv.lock (uncomment to ignore, but usually committed)
+
+--- Zensical & Documentation ---
+
+site/
+.zensical_cache/
+.cache/
+/docs/overrides/
+
+--- OS & IDE Specific ---
+
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+--- Project Specific Secrets & Infrastructure ---
+
+Never commit raw credentials, keys, or cluster tokens
+
+*.pem
+.key
+.pub
+kubeconfig
+.env
+.env.*
+!.env.*example
+
+Infrastructure backups and large binaries
+
+*.iso
+*.img
+*.qcow2
+/infrastructure/backups/
+/infrastructure/secrets/
+
+--- Database & Local Storage ---
+
+Local persistence for SurrealDB or MinIO should stay on the NUC/Host
+
+surrealdb_data/
+minio_data/
+postgres_data/
+*.db
+*.sqlite
+
+--- AI Models & Hugepages ---
+
+Models are managed via OpenEBS/LocalPV and shouldn't be in Git
+
+/models/
+*.gguf
+*.bin
+*.pt
+*.safetensors
+*.onnx
+
+*.log

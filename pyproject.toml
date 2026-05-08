@@ -1,0 +1,36 @@
+[project]
+name = "janus-synapse-edge"
+version = "1.0.0"
+description = "Dual-engine autonomous AI cluster running on constraint-optimized hardware."
+readme = "README.md"
+requires-python = ">=3.12"
+
+# Core dependencies for the Janus agents and orchestration
+dependencies = [
+    "crewai>=0.100.0",
+    "dspy-ai>=2.4.0",
+    "litellm>=1.35.0",
+    "surrealdb>=0.3.0",
+    "prometheus-client>=0.20.0"
+]
+
+[project.optional-dependencies]
+# Dependencies for the Zensical documentation stack
+docs = [
+    "zensical>=0.0.40"
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+# CRITICAL: Disables the requirement to build the project as a package.
+# This fixes the "Unable to determine which files to ship" build error.
+package = false
+managed = true
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.6.0",
+]

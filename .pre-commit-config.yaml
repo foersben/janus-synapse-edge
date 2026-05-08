@@ -1,0 +1,61 @@
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.6.0
+  hooks:
+  - id: trailing-whitespace
+  - id: end-of-file-fixer
+  - id: check-yaml
+    args:
+    - --allow-multiple-documents
+    exclude: ^cluster-tools/|^infrastructure/
+  - id: check-added-large-files
+    args:
+    - --maxkb=1000
+  - id: check-merge-conflict
+  - id: check-json
+  - id: detect-private-key
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.4.4
+  hooks:
+  - id: ruff
+    args:
+    - --fix
+    - --exit-non-zero-on-fix
+  - id: ruff-format
+- repo: https://github.com/gitleaks/gitleaks
+  rev: v8.18.2
+  hooks:
+  - id: gitleaks
+- repo: https://github.com/igorshubovych/markdownlint-cli
+  rev: v0.41.0
+  hooks:
+  - id: markdownlint
+    args:
+    - --fix
+    - --disable
+    - MD013
+- repo: local
+  hooks:
+  - id: check-identity
+    name: Enforce Author Identity
+    entry: |
+      bash -c '
+      REQUIRED_MAIL="mail@benjamin-foerster.de";
+      ACTUAL_MAIL=$(git config user.email);
+      SIGNING_ENABLED=$(git config commit.gpgsign);
+
+      if [ "$ACTUAL_MAIL" != "$REQUIRED_MAIL" ]; then
+        echo "❌ ERROR: Wrong Git Email!";
+        echo "Expected: $REQUIRED_MAIL";
+        echo "Found:    $ACTUAL_MAIL";
+        exit 1;
+      fi;
+
+      if [ "$SIGNING_ENABLED" != "true" ]; then
+        echo "❌ ERROR: GPG signing is disabled in git config.";
+        echo "Run: git config commit.gpgsign true";
+        exit 1;
+      fi'
+    language: system
+    pass_filenames: false
+    always_run: true

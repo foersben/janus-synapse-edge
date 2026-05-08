@@ -1,0 +1,80 @@
+[project]
+site_name = "Project Janus: Synapse Edge"
+site_description = "Enterprise-grade autonomous AI cluster GitOps documentation"
+site_url = "https://foersben.github.io/janus-synapse-edge"
+docs_dir = "docs"
+site_dir = "site"
+
+[project.theme]
+variant = "modern"
+palette = [
+  { media = "(prefers-color-scheme: dark)", scheme = "slate", primary = "black", accent = "deep-orange" },
+  { media = "(prefers-color-scheme: light)", scheme = "default", primary = "black", accent = "deep-orange" },
+]
+features = [
+  "navigation.tabs",
+  "navigation.sections",
+  "navigation.top",
+  "toc.integrate",
+  "search.suggest",
+  "search.highlight",
+  "content.code.copy",
+]
+
+[project.markdown_extensions]
+admonition = {}
+tables = {}
+"pymdownx.details" = {}
+"pymdownx.inlinehilite" = {}
+"pymdownx.snippets" = {}
+"pymdownx.highlight" = { anchor_linenums = true }
+toc = { permalink = true }
+# Enables Task Lists (- [ ])
+"pymdownx.tasklist" = { custom_checkbox = true }
+# Enables LaTeX Support
+"pymdownx.arithmatex" = { generic = true }
+# Enables MermaidJS via superfences
+"pymdownx.superfences" = { custom_fences = [
+  { name = "mermaid", class = "mermaid", format = "pymdownx.superfences.fence_code_format" },
+] }
+
+# Extra assets for MathJax (LaTeX) and Mermaid rendering
+[[project.extra_javascript]]
+src = "https://polyfill.io/v3/polyfill.min.js?features=es6"
+[[project.extra_javascript]]
+src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+[[project.extra_javascript]]
+src = "https://unpkg.com/mermaid@10/dist/mermaid.min.js"
+
+[[project.nav]]
+Home = "index.md"
+
+[[project.nav]]
+"Pre-Requisites" = [
+  { "Safe-Stack Preparation" = "🛠️ Preparation_ The _Safe-Stack_ Configuration.md" },
+]
+
+[[project.nav]]
+"Core Architecture" = [
+  { "00. Architecture & Constraints" = "00. Architecture Overview & Constraints Strategy.md" },
+  { "01. Physical Assembly & Security" = "01. Physical Assembly, BIOS & Bare-Metal Security.md" },
+  { "02. Proxmox & ZFS Encryption" = "02. Proxmox Base Installation & ZFS Encryption.md" },
+  { "03. Hypervisor Optimization" = "03. Proxmox Kernel & Hypervisor Optimization.md" },
+  { "04. Virtualization (Talos & K3s)" = "04. Virtualization & Kubernetes (Talos + K3s).md" },
+]
+
+[[project.nav]]
+"The AI Engines" = [
+  { "05. Core Inference Deployment" = "05. Core AI Inference Deployment (The Dual-Engine).md" },
+  { "06. Data Layer & Memory" = "06. Data Layer & Memory Substrate.md" },
+  { "07. API Gateway & Network DMZ" = "07. API Gateway, Orchestration & Network Firewall.md" },
+]
+
+[[project.nav]]
+"Autonomy & Operations" = [
+  { "08. Agent Workflows & UI" = "08. Agent Workflows & UI Layer.md" },
+  { "09. The Idle-Loop & Dreaming" = "09. The Autonomous Dynamic _Idle-Loop_ & _Dreaming.md" },
+  { "10. Observability & GitOps" = "10. Observability, Telemetry & GitOps.md" },
+  { "11. Disaster Recovery" = "11. Disaster Recovery & Automated Healing.md" },
+  { "12. Multi-Tenant Profiles" = "12. Multi-Tenant Profiles & Privacy Tiers.md" },
+]
