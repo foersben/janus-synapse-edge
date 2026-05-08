@@ -38,6 +38,36 @@ toc = { permalink = true }
   { name = "mermaid", class = "mermaid", format = "pymdownx.superfences.fence_code_format" },
 ] }
 
+# Track core project files to detect when infrastructure changes
+[tracking]
+config = ["pyproject.toml", "zensical.toml", ".pre-commit-config.yaml"]
+ci_cd = [".github/workflows/gh-pages.yml"]
+
+# Categorize your documentation files for Zensical's internal mapping
+[documentation]
+core = [
+  "docs/index.md",
+  "docs/00. Architecture Overview & Constraints Strategy.md",
+]
+infrastructure = [
+  "docs/01. Physical Assembly, BIOS & Bare-Metal Security.md",
+  "docs/02. Proxmox Base Installation & ZFS Encryption.md",
+  "docs/03. Proxmox Kernel & Hypervisor Optimization.md",
+  "docs/04. Virtualization & Kubernetes (Talos + K3s).md",
+]
+ai_engines = [
+  "docs/05. Core AI Inference Deployment (The Dual-Engine).md",
+  "docs/06. Data Layer & Memory Substrate.md",
+  "docs/07. API Gateway, Orchestration & Network Firewall.md",
+]
+operations = [
+  "docs/08. Agent Workflows & UI Layer.md",
+  "docs/09. The Autonomous Dynamic _Idle-Loop_ & _Dreaming.md",
+  "docs/10. Observability, Telemetry & GitOps.md",
+  "docs/11. Disaster Recovery & Automated Healing.md",
+  "docs/12. Multi-Tenant Profiles & Privacy Tiers.md",
+]
+
 # Extra assets for MathJax (LaTeX) and Mermaid rendering
 [[project.extra_javascript]]
 src = "https://polyfill.io/v3/polyfill.min.js?features=es6"

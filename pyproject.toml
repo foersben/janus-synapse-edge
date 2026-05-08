@@ -11,13 +11,13 @@ dependencies = [
     "dspy-ai>=2.4.0",
     "litellm>=1.35.0",
     "surrealdb>=0.3.0",
-    "prometheus-client>=0.20.0"
+    "prometheus-client>=0.20.0",
 ]
 
 [project.optional-dependencies]
-# Dependencies for the Zensical documentation stack
 docs = [
     "zensical>=0.0.40"
+    "mkdocs-material>=9.5.0",
 ]
 
 [build-system]
@@ -31,6 +31,4 @@ package = false
 managed = true
 
 [dependency-groups]
-dev = [
-    "pre-commit>=4.6.0",
-]
+dev = ["pre-commit>=4.6.0", "zensical>=0.0.40", "mkdocs-material>=9.5.0"]

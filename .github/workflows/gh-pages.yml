@@ -31,7 +31,7 @@ jobs:
 
       - name: Build Docs with Zensical
         # This processes your [tracking] and [documentation] blocks
-        run: uv run zensical build
+        run: uvx zensical build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
