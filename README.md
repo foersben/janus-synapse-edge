@@ -4,6 +4,23 @@
 
 **Project Janus** is a rigorous exercise in **Constraint Engineering**. It serves as a proof-of-concept that datacenter-grade autonomous AI orchestration is achievable on thermally constrained consumer hardware. By leveraging aggressive hardware-software co-design, bi-temporal memory substrates, and a "crash-safe" edge resilience philosophy, this system optimizes the **NVIDIA Blackwell (SM120)** architecture to its absolute limit.
 
+---
+
+## **🎥 Technical Deep Dive: The Janus Concept**
+
+> [!TIP]
+> **Executive Summary:** This AI-synthesized architectural briefing provides a high-fidelity conceptual summary of Project Janus. It explores the **Constraint Engineering** conflict and the subsequent implementation of the **Dual-Engine inference stack** and **bitemporal memory substrates**.
+>
+> <div align="center">
+>
+> [![Project Janus: Conceptual Briefing](https://img.youtube.com/vi/INSERT_VIDEO_ID_HERE/maxresdefault.jpg)](https://www.youtube.com/watch?v=INSERT_VIDEO_ID_HERE)
+>
+> _Concept Summary generated via NotebookLM • **Technical Tier: Multimodal Infrastructure Synthesis**_
+>
+> </div>
+
+---
+
 ## **🧬 The Meaning Behind the Name (The Mythology)**
 
 The project identity is built on three pillars of the system's design:
