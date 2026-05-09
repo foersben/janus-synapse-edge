@@ -12,8 +12,9 @@
 > **Executive Summary:** This AI-synthesized architectural briefing provides a high-fidelity conceptual summary of Project Janus. It explores the **Constraint Engineering** conflict and the subsequent implementation of the **Dual-Engine inference stack** and **bitemporal memory substrates**.
 >
 > <div align="center">
->
-> [![Project Janus: Conceptual Briefing](https://img.youtube.com/vi/INSERT_VIDEO_ID_HERE/maxresdefault.jpg)](https://www.youtube.com/watch?v=INSERT_VIDEO_ID_HERE)
+> <video src="https://github.com/user-attachments/assets/71b6dc6c-54b6-43a3-ac5e-02f281288cf9" controls="controls" style="max-width: 100%;">
+>   Your browser does not support the video tag.
+>  </video>
 >
 > _Concept Summary generated via NotebookLM • **Technical Tier: Multimodal Infrastructure Synthesis**_
 >
