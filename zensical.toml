@@ -50,6 +50,7 @@ core = [
   "docs/00. Architecture Overview & Constraints Strategy.md",
 ]
 infrastructure = [
+  "docs/🛠️ Preparation The Safe-Stack Configuration.md",
   "docs/01. Physical Assembly, BIOS & Bare-Metal Security.md",
   "docs/02. Debian Substrate, LUKS Encryption & Proxmox Sideloading.md",
   "docs/03. Proxmox Kernel & Hypervisor Optimization.md",
@@ -81,14 +82,14 @@ Home = "index.md"
 
 [[project.nav]]
 "Pre-Requisites" = [
-  { "Safe-Stack Preparation" = "🛠️ Preparation_ The _Safe-Stack_ Configuration.md" },
+  { "Safe-Stack Preparation" = "🛠️ Preparation The Safe-Stack Configuration.md" },
 ]
 
 [[project.nav]]
 "Core Architecture" = [
   { "00. Architecture & Constraints" = "00. Architecture Overview & Constraints Strategy.md" },
   { "01. Physical Assembly & Security" = "01. Physical Assembly, BIOS & Bare-Metal Security.md" },
-  { "02. Proxmox & ZFS Encryption" = "02. Proxmox Base Installation & ZFS Encryption.md" },
+  { "02. Debian Substrate & LUKS" = "02. Debian Substrate, LUKS Encryption & Proxmox Sideloading.md" },
   { "03. Hypervisor Optimization" = "03. Proxmox Kernel & Hypervisor Optimization.md" },
   { "04. Virtualization (Talos & K3s)" = "04. Virtualization & Kubernetes (Talos + K3s).md" },
 ]
