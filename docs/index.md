@@ -49,7 +49,7 @@ The documentation is organized as a sequential textbook. It is recommended to fo
 
 ### Phase 1: Physical Foundations & Bare-Metal Hardening
 
-* **[🛠️ Preparation: The Safe-Stack Configuration](<🛠️ Preparation_ The _Safe-Stack_ Configuration.md>):** Defining the "Nuke and Pave" philosophy and hardware baseline.
+* **[🛠️ Preparation: The Safe-Stack Configuration](<🛠️ Preparation The Safe-Stack Configuration.md>):** Defining the "Nuke and Pave" philosophy and hardware baseline.
 * **[01. Physical Assembly, BIOS & Bare-Metal Security](<01. Physical Assembly, BIOS & Bare-Metal Security.md>):** Thermal clearances, 14700K undervolting, and DMA protection.
 * **[02. Debian Substrate, LUKS Encryption & Proxmox Sideloading](<02. Debian Substrate, LUKS Encryption & Proxmox Sideloading.md>):** Establishing the LUKS-native cryptographic boundary and hypervisor sideloading.
 * **[03. Proxmox Kernel & Hypervisor Optimization](<03. Proxmox Kernel & Hypervisor Optimization.md>):** P-Core/E-Core pinning and ZFS ARC tuning.

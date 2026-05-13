@@ -51,7 +51,7 @@ core = [
 ]
 infrastructure = [
   "docs/01. Physical Assembly, BIOS & Bare-Metal Security.md",
-  "docs/02. Proxmox Base Installation & ZFS Encryption.md",
+  "docs/02. Debian Substrate, LUKS Encryption & Proxmox Sideloading.md",
   "docs/03. Proxmox Kernel & Hypervisor Optimization.md",
   "docs/04. Virtualization & Kubernetes (Talos + K3s).md",
 ]
