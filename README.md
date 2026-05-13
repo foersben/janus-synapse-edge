@@ -13,7 +13,7 @@
 >
 > <div align="center">
 > <video src="https://github.com/user-attachments/assets/6bbdf2fa-93d3-4994-b12f-b6944c4dd21f" width="60%" controls>
->   Your browser does not support 
+>   Your browser does not support
 >  </video>
 >
 > _Concept Summary generated via NotebookLM • **Technical Tier: Multimodal Infrastructure Synthesis**_
@@ -37,7 +37,7 @@ The project identity is built on three pillars of the system's design:
 The core of this project is its exhaustive documentation, structured as a sequential engineering specification.
 
 1. **[Physical Foundations](https://foersben.github.io/janus-synapse-edge/01.%20Physical%20Assembly%2C%20BIOS%20%26%20Bare-Metal%20Security/)**: Thermal clearances, 14700K hard-capping, and DMA protection.
-2. **[Cryptographic Boundary](https://foersben.github.io/janus-synapse-edge/02.%20Proxmox%20Base%20Installation%20%26%20ZFS%20Encryption/)**: ZFS-native AES-256-GCM encryption with human-in-the-loop cold-boot protocols.
+2. **[Debian Substrate, LUKS Encryption & Proxmox Sideloading](https://foersben.github.io/janus-synapse-edge/02.%20Debian%20Substrate%2C%20LUKS%20Encryption%20%26%20Proxmox%20Sideloading/)**: LUKS-native AES-256-GCM encryption and Proxmox sideloading with human-in-the-loop protocols.
 3. **[Hypervisor Optimization](https://foersben.github.io/janus-synapse-edge/03.%20Proxmox%20Kernel%20%26%20Hypervisor%20Optimization/)**: Real-time P-Core pinning and ZFS ARC tuning for IOps-heavy GraphRAG.
 4. **[Immutable Orchestration](https://foersben.github.io/janus-synapse-edge/04.%20Virtualization%20%26%20Kubernetes%20%28Talos%20%2B%20K3s%29/)**: Talos Linux & K3s deployment for an immutable, GitOps-managed compute tier.
 5. **[The Dual-Engine Paradigm](https://foersben.github.io/janus-synapse-edge/05.%20Core%20AI%20Inference%20Deployment%20%28The%20Dual-Engine%29/)**: Coordinating PowerInfer (70B) and SGLang (8B) via NVFP4 hardware acceleration.

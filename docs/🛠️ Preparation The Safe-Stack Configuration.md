@@ -34,7 +34,7 @@ When configuring the main compute server (Intel i7-14700K / RTX 5070 Ti), the in
 
 1. **BIOS Thermal Tuning:** To operate within the thermal dissipation envelope of the Jonsbo Z20 chassis, the CPU's PL1 and PL2 power limits must be strictly throttled to **180W** via the motherboard UEFI/BIOS.
 2. **BIOS Power Policy:** The "Restore on AC/Power Loss" directive must be set to **Power Off**. If the grid power fluctuates, the main server must remain dormant. It only boots when the grid has stabilized and the UPS-backed NUC transmits a secure Wake-On-LAN (WoL) packet.
-3. **ZFS Native Encryption:** The Proxmox base installation requires ZFS native encryption with a strong cryptographic passphrase. This ensures that physical theft of the drives yields no readable data, requiring a manual unlock upon initialization.
+3. **LUKS Block Encryption:** The base installation utilizes a Debian 13 foundation with LUKS full-disk encryption, upon which Proxmox is sideloaded. This establishes a robust cryptographic boundary at the block level, ensuring that physical theft of the drives yields no readable data and requiring a manual unlock upon initialization.
 4. **Hugepages Allocation:** To ensure zero memory fragmentation for the AI models, **56GB of Hugepages** must be pre-allocated. Crucially, this reservation is injected into the `talos-machineconfig.yaml` of the worker VM, *not* on the Proxmox host, to prevent hypervisor-level memory locking errors.
 
 ### 3.1 Automated Crash Recovery (Sequence Diagram)
@@ -61,7 +61,7 @@ sequenceDiagram
     NUC->>Proxmox: Transmits Wake-On-LAN (WoL) Packet
     Proxmox->>Proxmox: Boot Sequence Initiated
 
-    Note over Proxmox: Admin manually decrypts ZFS
+    Note over Proxmox: Admin manually decrypts LUKS
     Proxmox->>Janitor: Talos VM Boots & Starts Daemon
 
     Janitor->>NUC: Query SurrealDB for 'RUNNING' tasks
@@ -78,7 +78,7 @@ sequenceDiagram
 The deployment of the Safe-Stack configuration must be executed in a specific, serialized order to prevent configuration conflicts:
 
 1. **Hardware Initialization:** Apply BIOS tuning (VT-d, IOMMU enablement, 180W Power Limits, and "Stay Off" rules).
-2. **Hypervisor Provisioning:** Install Proxmox VE utilizing ZFS Encrypted storage on the primary 2TB NVMe drive.
+2. **Base OS & Hypervisor Provisioning:** Install Debian 13 utilizing LUKS encrypted storage on the primary 2TB NVMe drive, followed by the manual sideloading of the Proxmox VE hypervisor packages.
 3. **Resource Taming:** Limit the ZFS Adaptive Replacement Cache (ARC) to 8GB and disable the host swap partition to prevent unnecessary SSD wear.
 4. **IOMMU Passthrough:** Isolate the RTX 5070 Ti from the host kernel and bind it to the VFIO driver, assigning it exclusively to the Talos Linux "Tensor Worker" VM.
 
