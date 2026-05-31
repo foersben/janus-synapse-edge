@@ -1,0 +1,19 @@
+name: Pre-Commit Checks
+
+on:
+  pull_request:
+    branches: [ main, master, develop ]
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.13'
+    - name: Run Pre-Commit Checks
+      uses: pre-commit/action@v3.0.1
+      env:
+        # Bypasses the local identity/GPG check on the server
+        SKIP: check-identity
