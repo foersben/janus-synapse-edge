@@ -22,7 +22,7 @@ Because this node is continuously powered by an **Eaton 3S 550 DIN UPS**, it is 
 
 Because the primary Proxmox hypervisor is expected to lose power instantaneously during grid failure, an immutable backup strategy is the ultimate safety net.
 
-Data redundancy is managed via a Restic CronJob executing on an incremental **three-hour interval**. To ensure strict data privacy when offloading to public cloud providers (e.g., Dropbox or S3), the system employs Partially Homomorphic Encryption (PHE) or AES-256-GCM. All Gitea prompts, Letta state snapshots, and ClickHouse archives are encrypted bare-metal on the server prior to network transmission.
+Data redundancy for the massive Letta memory state is managed via an Event-Driven Restic Post-Hook. This backup triggers exactly once per day immediately following the ZFS flush during the nocturnal "Dreaming" phase, capturing the batched state before network transmission. To ensure strict data privacy when offloading to public cloud providers (e.g., Dropbox or S3), the system employs Partially Homomorphic Encryption (PHE) or AES-256-GCM. All Gitea prompts, Letta state snapshots, and ClickHouse archives are encrypted bare-metal on the server prior to network transmission.
 
 !!! tip "Bandwidth Throttling"
     During the initial synchronization phase, the volume of data can severely saturate the local network. It is highly recommended to invoke Restic with the `--limit-upload` parameter to maintain Quality of Service (QoS) for concurrent operations.
@@ -36,7 +36,7 @@ When configuring the main compute server (Intel i7-14700K / RTX 5070 Ti), the in
 1.  **BIOS Thermal Tuning:** To operate within the thermal dissipation envelope of the Jonsbo Z20 chassis, the CPU's PL1 and PL2 power limits must be strictly throttled to **180W** via the motherboard UEFI/BIOS.
 2.  **BIOS Power Policy:** The "Restore on AC/Power Loss" directive must be set to **Power Off**. If the grid power fluctuates, the main server must remain dormant. It only boots when the grid has stabilized and the UPS-backed NUC transmits a secure Wake-On-LAN (WoL) packet.
 3.  **LUKS Block Encryption:** The base installation utilizes a Debian 13 foundation with LUKS full-disk encryption, upon which Proxmox is sideloaded. This establishes a robust cryptographic boundary at the block level, ensuring that physical theft of the drives yields no readable data and requiring a manual unlock upon initialization.
-4.  **Hugepages Allocation:** To ensure zero memory fragmentation for the AI models, **56GB of Hugepages** must be pre-allocated. Crucially, this reservation is injected into the `talos-machineconfig.yaml` of the worker VM, *not* on the Proxmox host, to prevent hypervisor-level memory locking errors.
+4.  **Hugepages Allocation:** To ensure zero memory fragmentation for the AI models, **56GB of Hugepages** must be pre-allocated. Crucially, to achieve true zero-fragmentation, this requires a Dual-Layer Allocation. The Proxmox host must lock the physical RAM to back the VM via KVM passthrough, and the Talos guest OS must simultaneously inject `hugepagesz=1G hugepages=56` into its kernel command line within `talos-machineconfig.yaml` so the Kubernetes Kubelet can allocate them to the inference pods.
 
 ### 3.1 Automated Crash Recovery (Sequence Diagram)
 
@@ -70,7 +70,7 @@ sequenceDiagram
     NUC-->>Janitor: Return unresolved task transaction list
 
     Janitor->>Wasmtime: Terminate lingering processes & handles
-    Note over Janitor: Replay last 5 min of transaction logs
+    Note over Janitor: Replay all transaction logs since last daily flush
     Note over Janitor: Cluster State Reconciled. Ready for AI Inference.
 ```
 
@@ -86,4 +86,4 @@ The deployment of the Safe-Stack configuration must be executed in a specific, s
 4.  **IOMMU Passthrough:** Isolate the RTX 5070 Ti from the host kernel and bind it to the VFIO driver, assigning it exclusively to the Talos Linux "Tensor Worker" VM.
 
 !!! note "Manual Override and Airbag"
-    Following any major configuration change or prompt update, do not wait for the three-hour cron interval. Immediately execute a manual backup using the CLI to ensure the changes are immutably stored in the cold telemetry tier.
+    Following any major configuration change or prompt update, immediately trigger the Restic backup hook or execute a manual backup using the CLI to ensure the changes are immutably stored in the cold telemetry tier.

@@ -65,7 +65,7 @@ flowchart TB
         GPU -. "11GB VRAM allocation" .-> EngineA
         RAM -. "Cold-neurons spillover" .-> EngineA
         CPU -. "Verification (8 P-Cores)" .-> EngineA
-        CPU -. "Gateway/Orchestration (12 E-Cores)" .-> Rig
+        CPU -. "Gateway/Orchestration (10 E-Cores)" .-> Rig
         NVMe -. "Zero-copy GGUF/Letta streaming" .-> EngineA
     end
 
@@ -102,7 +102,7 @@ flowchart TB
 ### 1. Primary Compute Workstation (Jonsbo Z20)
 * **Engine A (Deep Reasoning):** Governed by **llama.cpp** running a 70B parameter GGUF model. Under-the-hood bandwidth limitations are bypassed using **Multi-Token Prediction (MTP) Speculative Decoding**. A lightweight 1.5B/3B draft model resides in VRAM to guess output tokens, while the physical P-Cores verify guesses against the larger 70B parameters paged across system DDR5.
 * **Engine B (Reflex & Vision):** Governed by **SGLang (v0.4+)** utilising custom deep_gemm kernels for native Blackwell NVFP4 calculation. It hosts **Qwen2-VL** for real-time text-reflex and visual parsing, alongside high-density multi-LoRA adapters served dynamically via Punica/S-LoRA kernels—all locked within a secure **4.5GB VRAM static fence**.
-* **Orchestration:** Comprises the Rust-native **Rig** framework and **TensorZero** declarative gateway routing. All gateway, scheduling, and orchestrator tasks are pinned strictly to the **12 Intel E-Cores** to isolate inference math from application-level execution loops.
+* **Orchestration:** Comprises the Rust-native **Rig** framework and **TensorZero** declarative gateway routing. All gateway, scheduling, and orchestrator tasks are pinned strictly to **10 Intel E-Cores** (leaving 2 Ghost Threads reserved exclusively for hypervisor LUKS decryption) to isolate inference math from application-level execution loops.
 
 ### 2. Edge-Tier Resiliency (Intel NUC)
 * **Role:** Acts as the cluster’s offline logging center, cold telemetry repository, and remote recovery manager. It runs lightweight transaction logging inside **ClickHouse** and systems telemetry in **VictoriaMetrics**, isolated from the primary compute node's write overhead.
