@@ -16,7 +16,7 @@ Project Janus is built upon the foundational philosophy of **Constraint Engineer
 
 * **Compile-Time Safety & Low-Overhead Orchestration:** All agent logic is compiled natively in Rust using the **Rig Framework**. This replaces the massive memory overhead (typically 2GB+ per process) and unpredictable garbage collection latency of Python-based execution engines (such as CrewAI and Agent Zero) with a sub-millisecond, compile-time safe control plane that consumes less than 150MB of RAM.
 * **Cognitive Memory Virtualization (Letta):** Instead of traversing network boundaries to external bitemporal databases, the agent's memory (partitioned virtually into Core, Recall, and Archival tiers) is managed directly within the LLM's active token-space. Under the hood, **Letta (MemGPT framework)** orchestrates the state machine, leveraging `io_uring` zero-copy stream operations in the guest OS kernel for sub-second, network-free cognitive state recall.
-* **Blackwell Micro-Scaling Optimization:** By integrating hardware-native NVFP4 (4-bit floating point) math execution across both SGLang and llama.cpp, we double the functional parameter density of the RTX 5070 Ti's 16GB VRAM pool, enabling massive models to run locally at interactive speeds.
+* **Blackwell Micro-Scaling Optimization:** By integrating hardware-native NVFP4 (4-bit floating point) math execution across llama.cpp, we double the functional parameter density of the RTX 5070 Ti's 16GB VRAM pool, enabling massive models to run locally at interactive speeds.
 * **Mathematical WASM Sandboxing:** Ad-hoc, ephemeral agent tools execute in microsecond-latency **WebAssembly (WASM) runtimes** (powered by Wasmtime) embedded directly in the Rust control binary. This completely eliminates heavy, slow Docker containers, providing mathematically proven execution isolation and immediate, automatic host resource cleanup upon process termination.
 
 ---
@@ -54,7 +54,7 @@ flowchart TB
                     subgraph DualEngine["Dual-Engine Inference Pods"]
                         direction LR
                         EngineA["Engine A (llama.cpp)<br/>70B GGUF Model<br/>MTP Spec Decoding"]:::virtual
-                        EngineB["Engine B (SGLang v0.4+)<br/>Qwen2-VL 8B Model<br/>TurboQuant 3-Bit KV"]:::virtual
+                        EngineB["Engine B (llama.cpp)<br/>Qwen2-VL 8B Model<br/>GPU/CPU Split"]:::virtual
                     end
                 end
             end
@@ -101,7 +101,7 @@ flowchart TB
 
 ### 1. Primary Compute Workstation (Jonsbo Z20)
 * **Engine A (Deep Reasoning):** Governed by **llama.cpp** running a 70B parameter GGUF model. Under-the-hood bandwidth limitations are bypassed using **Multi-Token Prediction (MTP) Speculative Decoding**. A lightweight 1.5B/3B draft model resides in VRAM to guess output tokens, while the physical P-Cores verify guesses against the larger 70B parameters paged across system DDR5.
-* **Engine B (Reflex & Vision):** Governed by **SGLang (v0.4+)** utilising custom deep_gemm kernels for native Blackwell NVFP4 calculation. It hosts **Qwen2-VL** for real-time text-reflex and visual parsing, alongside high-density multi-LoRA adapters served dynamically via Punica/S-LoRA kernels—all locked within a secure **4.5GB VRAM static fence**.
+* **Engine B (Reflex & Vision):** Governed by **llama.cpp** utilizing a GPU/CPU heterogeneous split. It hosts **Qwen2-VL** for real-time text-reflex and visual parsing, alongside high-density LoRA adapters swapped dynamically—all locked within a secure **4.5GB VRAM static fence**.
 * **Orchestration:** Comprises the Rust-native **Rig** framework and **TensorZero** declarative gateway routing. All gateway, scheduling, and orchestrator tasks are pinned strictly to **10 Intel E-Cores** (leaving 2 Ghost Threads reserved exclusively for hypervisor LUKS decryption) to isolate inference math from application-level execution loops.
 
 ### 2. Edge-Tier Resiliency (Intel NUC)
@@ -122,7 +122,7 @@ The chapters are structured to form a comprehensive, textbook-style guide. It is
 
 ### Phase 2: The Modern AI Stack
 * **[04. Talos Linux & K3s Topology](./04. Virtualization & Kubernetes (Talos + K3s).md):** Immutable Talos OS installation, Talos networking, and declarative K3s Kubernetes resource distribution.
-* **[05. Core AI Inference (The Dual-Engine)](./05. Core AI Inference Deployment (The Dual-Engine).md):** Fencing Engine A (llama.cpp) and Engine B (SGLang v0.4+), configuring speculative execution, and managing NVFP4 mathematical precision.
+* **[05. Core AI Inference (The Dual-Engine)](./05. Core AI Inference Deployment (The Dual-Engine).md):** Fencing Engine A (llama.cpp) and Engine B (llama.cpp), configuring speculative execution, and managing mathematical precision.
 * **[06. Data Layer & Letta Cognitive Memory](./06. Data Layer & Memory Substrate.md):** Setting up Letta (MemGPT) cognitive memory tiers in local token-space, streaming via `io_uring`, and repointing NUC cold backups.
 
 ### Phase 3: Orchestration & Autonomy
