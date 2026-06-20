@@ -54,7 +54,7 @@ flowchart TB
                     subgraph DualEngine["Dual-Engine Inference Pods"]
                         direction LR
                         EngineA["Engine A (llama.cpp)<br/>70B GGUF Model<br/>MTP Spec Decoding"]:::virtual
-                        EngineB["Engine B (llama.cpp)<br/>Qwen2-VL 8B Model<br/>GPU/CPU Split"]:::virtual
+                        EngineB["Engine B (llama.cpp)<br/>Qwen2-VL 7B Model<br/>GPU/CPU Split"]:::virtual
                     end
                 end
             end

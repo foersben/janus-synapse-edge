@@ -26,7 +26,7 @@
 
 The project identity is built on three pillars of the system's design:
 
-- **Janus (The Duality):** Named for the Roman god of transitions, doors, and dualities, representing our **Dual-Engine** inference paradigm. The architecture simultaneously hosts a deep-reasoning planner (**llama.cpp 70B Speculative Decoding**) and a hyper-fast rapid executor (**llama.cpp 8B Heterogeneous Split**). This duality extends to the logical walls cryptographically separating multi-tenant profiles.
+- **Janus (The Duality):** Named for the Roman god of transitions, doors, and dualities, representing our **Dual-Engine** inference paradigm. The architecture simultaneously hosts a deep-reasoning planner (`llama.cpp` 70B Speculative Decoding) and a hyper-fast rapid executor (`llama.cpp` 7B Heterogeneous Split with Qwen2-VL). This duality extends to the logical walls cryptographically separating multi-tenant profiles.
 - **Synapse (The Memory):** Reflects the sophisticated local **Dreaming** pipeline. During idle phases, the **Letta (formerly MemGPT)** engine consolidates active token-space memory state, summarizing chronological history from the local Recall database and paging entity relationship graphs into the high-density Archival tier. Simultaneously, the **Nous Hermes Native GEPA** engine searches for Pareto-efficient YAML configurations.
 - **Edge (The Resilience):** Signifies the **Zero-Trust Bare Metal** local network and the distributed **Edge-Tier Resiliency**. While the main compute host is deliberately "Crash-Safe" (No-UPS), the primary telemetry database is isolated to a battery-backed Intel NUC node, replaying transaction logs on boot to restore the stateless local Letta state.
 
@@ -40,7 +40,7 @@ The core of this project is its exhaustive documentation, structured as a sequen
 2.  **[Cryptographic Boundary & Proxmox Sideloading](https://foersben.github.io/janus-synapse-edge/02.%20Debian%20Substrate%2C%20LUKS%20Encryption%20%26%20Proxmox%20Sideloading/)**: LUKS-native block encryption and Proxmox sideloading with human-in-the-loop protocols.
 3.  **[Hypervisor Optimization (Core Pinning)](https://foersben.github.io/janus-synapse-edge/03.%20Proxmox%20Kernel%20%26%20Hypervisor%20Optimization/)**: Real-time P-Core pinning, ZFS ARC tuning, and hugepages configs.
 4.  **[Talos Linux & K3s Topology](https://foersben.github.io/janus-synapse-edge/04.%20Virtualization%20%26%20Kubernetes%20%28Talos%20%2B%20K3s%29/)**: Immutable OS deployment for GitOps-managed compute VM.
-5.  **[Core AI Inference (The Dual-Engine)](https://foersben.github.io/janus-synapse-edge/05.%20Core%20AI%20Inference%20Deployment%20%28The%20Dual-Engine%29/)**: Coordinating llama.cpp speculative decoding (70B) and llama.cpp CPU/GPU split (8B).
+5.  **[Core AI Inference (The Dual-Engine)](https://foersben.github.io/janus-synapse-edge/05.%20Core%20AI%20Inference%20Deployment%20%28The%20Dual-Engine%29/)**: Coordinating llama.cpp speculative decoding (70B) and llama.cpp CPU/GPU split (7B).
 6.  **[Data Layer & Letta Memory](https://foersben.github.io/janus-synapse-edge/06.%20Data%20Layer%20%26%20Memory%20Substrate/)**: Letta cognitive memory virtualisation in local token-space, paged asynchronously via `io_uring`.
 7.  **[TensorZero Gateway & Network DMZ](https://foersben.github.io/janus-synapse-edge/07.%20API%20Gateway%2C%20Orchestration%20%26%20Network%20Firewall/)**: High-performance TensorZero gateway routing and secure Rig webhooks.
 8.  **[Rig Framework & WASM Sandboxing](https://foersben.github.io/janus-synapse-edge/08.%20Agent%20Workflows%20%26%20UI%20Layer/)**: Compiling Rust-native agents with Rig and spawning transient Wasmtime sandboxes.
@@ -70,7 +70,7 @@ We maximize a Micro-ATX thermal envelope (Jonsbo Z20) by strictly fencing resour
 Instead of a monolithic approach, the system uses a bifurcated, hardware-pinned inference pipeline:
 
 - **Engine A (Deep Planning):** **llama.cpp** hosts 4-bit GGUF 70B models. It utilizes **Multi-Token Prediction (MTP) Speculative Decoding**, loading a 1.5B/3B draft model inside VRAM to guess tokens, while the physical P-Cores verify guesses against the larger GGUF parameters cached in DDR5.
-- **Engine B (Reflexive Execution):** **llama.cpp** runs 8B models (e.g., Qwen2-VL) inside a **4.5GB VRAM static fence**, utilizing a heterogeneous split (CPU-bound vision projection) and declarative adapter swapping.
+- **Engine B (Reflexive Execution):** **llama.cpp** runs 7B models (e.g., Qwen2-VL) inside a **4.5GB VRAM static fence**, utilizing a heterogeneous split (CPU-bound vision projection) and declarative adapter swapping.
 
 ### **3. Virtualized Cognitive Memory Substrate**
 
