@@ -9,7 +9,11 @@ The Janus architecture relies on a specialized **"Hybrid-Resilience" Configurati
 
 ## 1. The Telemetry and Resilience Substrate (Intel NUC Cold-Tier)
 
-The **Intel NUC10i5FNH** serves as the "Edge-Tier Resiliency Node." In the 2026 architecture, the NUC is liberated from active, real-time database query operations (formerly SurrealDB GraphRAG). Instead, it hosts the cluster's immutable cold-ledger inside a column-oriented **ClickHouse** database and system telemetry inside a compressed **VictoriaMetrics** instance.
+The Intel NUC10i5FNH serves as the "Edge-Tier Resiliency Node." In the 2026 architecture, the NUC is liberated from active, real-time database query operations. Instead, it hosts three strictly immutable services:
+
+* **ClickHouse:** A column-oriented database housing the cluster's permanent cold-ledger and Letta memory logs.
+* **VictoriaMetrics:** A highly compressed time-series database for node telemetry and thermal tracking.
+* **MinIO:** A lightweight, S3-compatible object storage container specifically targeting the Talos K3s `--etcd-s3` automated snapshots to protect the declarative cluster state from main-node NVMe corruption.
 
 Because this node is continuously powered by an **Eaton 3S 550 DIN UPS**, it is completely shielded from sudden grid-power dropouts:
 
