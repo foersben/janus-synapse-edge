@@ -143,7 +143,7 @@ The chapters are structured to form a comprehensive, textbook-style guide. It is
     All active inference engines must target hardware-native **NVFP4 (4-bit floating point)** micro-scaling configurations. This is non-negotiable for preserving context capacity within the strict physical boundaries of the RTX 5070 Ti.
 
 !!! info "Resilient Stateful Separation"
-    The primary compute workstation must remain structurally **stateless**. No long-term agent state, prompt evolution mutations, or log traces are stored directly on the primary compute disks; state must live in the UPS-protected NUC telemetry tiers and the immutable GitOps repository declarations.
+    The primary compute workstation must remain transactionally stateless during active hours. Active runtime micro-writes and log traces are strictly banned from local disks and streamed to the UPS-protected NUC. The primary NVMe hosts only the daily-compiled, read-heavy Letta Archival state, which is reconstructed asynchronously by the NUC in the event of a power failure.
 
 !!! danger "No-Python Production Mandate"
     All production-tier agent logic, gateway routing, and sandbox scheduling must be compiled natively in Rust or executed within embedded WASM environments. Python dependencies (`pip`, `venv`, packages) are strictly prohibited from entering the runtime plane and are isolated entirely to offline Model Fine-Tuning and Quantization-Aware Training (QAT) pipelines.
