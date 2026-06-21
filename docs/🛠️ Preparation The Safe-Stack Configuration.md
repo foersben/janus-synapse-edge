@@ -23,16 +23,18 @@ The Janus architecture relies on a specialized **"Hybrid-Resilience" Configurati
 
 ## 1. The Telemetry and Resilience Substrate (Intel NUC Cold-Tier)
 
-The Intel NUC10i5FNH serves as the "Edge-Tier Resiliency Node." In the 2026 architecture, the NUC is liberated from active, real-time database query operations. Instead, it hosts three strictly immutable services:
+The Intel NUC10i5FNH serves as the "Edge-Tier Resiliency Node." In the 2026 architecture, the NUC is liberated from active, real-time database query operations. Instead, it hosts the following dedicated resilient services:
 
 * **ClickHouse:** A column-oriented database housing the cluster's permanent cold-ledger and Letta memory logs.
-* **VictoriaMetrics:** A highly compressed time-series database for node telemetry and thermal tracking.
-* **MinIO:** A lightweight, S3-compatible object storage container utilized for backing up the Letta archival state and GitOps artifacts, while K3s state is natively backed up via the ClickHouse/PostgreSQL engine on the NUC to protect the declarative cluster state from main-node NVMe corruption.
+* **PostgreSQL:** The transactional database serving as the Kine external datastore for K3s cluster state to protect the declarative system configuration from main-node NVMe corruption.
+* **MinIO:** A lightweight, S3-compatible object storage container utilized for backing up the Letta archival state and GitOps artifacts.
+* **VictoriaMetrics & Grafana:** Time-series telemetry and dashboard engines, entirely offloaded from the main Jonsbo rig to run natively on the Intel NUC.
+* **cloudflared Ingress Tunnel:** The DMZ ingress tunnel, offloaded from the main Jonsbo rig to run natively on the NUC, handling all external TLS termination and proxy routing to the main node's TensorZero gateway.
 
-Because this node is continuously powered by an **Eaton 3S 550 DIN UPS**, it is completely shielded from sudden grid-power dropouts:
+Because this node is continuously powered by an **Eaton 3S 550 DIN UPS** and equipped with a enterprise-grade **Samsung SM863a 2TB Data-Center SATA SSD**, it is completely shielded from sudden grid-power dropouts and physical storage wear:
 
 *   **Asynchronous Logging Stream:** The compute workstation dispatches structured agent transaction traces and Letta memory logs asynchronously over the **NETGEAR MS308E 2.5G Managed Switch** to the ClickHouse database on the NUC. This protects the compute node's expensive FireCuda NVMe from the severe write-amplification caused by continuous agent logging.
-*   **Contiguous Flushes:** ClickHouse caches incoming OTLP events in memory and writes them in highly contiguous, compressed blocks to the NUC SSD, reducing physical flash wear-and-tear by over 90% while guaranteeing transaction history durability.
+*   **Indestructible DC Storage (Samsung SM863a):** ClickHouse caches incoming OTLP events in memory and writes them to the Samsung SM863a 2TB Data-Center SATA SSD. The SM863a's extreme Data Center Write Endurance (DWPD - Drive Writes Per Day) makes it the perfect, indestructible target for continuous, high-write OTLP telemetry streams.
 
 ---
 

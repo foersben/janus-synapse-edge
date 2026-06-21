@@ -109,7 +109,7 @@ flowchart TB
 
 ### 1. Primary Compute Workstation (Jonsbo Z20)
 * **Engine A (Deep Reasoning):** Governed by **llama.cpp** running a 70B parameter GGUF model. Under-the-hood bandwidth limitations are bypassed using **Multi-Token Prediction (MTP) Speculative Decoding**. A lightweight 1.5B/3B draft model resides in VRAM to guess output tokens, while the physical P-Cores verify guesses against the larger 70B parameters paged across system DDR5.
-* **Engine B (Reflex & Vision):** Governed by **llama.cpp** utilizing a GPU/CPU heterogeneous split. It hosts **Qwen2-VL** for real-time text-reflex and visual parsing, alongside high-density LoRA adapters swapped dynamically—all locked within a secure **4.5GB VRAM static fence**.
+* **Engine B (Reflex & Vision):** Governed by **llama.cpp** utilizing a GPU/CPU heterogeneous split. It hosts **Qwen2-VL** for real-time text-reflex and visual parsing, alongside high-density LoRA adapters swapped dynamically—all locked within a secure **4.0GB VRAM static fence** (within a shared **4.5GB** GPU partition with Whisper STT).
 * **Orchestration:** Comprises the Rust-native **Rig** framework and **TensorZero** declarative gateway routing. All gateway, scheduling, and orchestrator tasks are pinned strictly to **10 Intel E-Cores** (leaving 2 Ghost Threads reserved exclusively for hypervisor LUKS decryption) to isolate inference math from application-level execution loops.
 
 ### 2. Edge-Tier Resiliency (Intel NUC)
