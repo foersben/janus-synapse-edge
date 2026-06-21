@@ -27,7 +27,7 @@ The Intel NUC10i5FNH serves as the "Edge-Tier Resiliency Node." In the 2026 arch
 
 * **ClickHouse:** A column-oriented database housing the cluster's permanent cold-ledger and Letta memory logs.
 * **VictoriaMetrics:** A highly compressed time-series database for node telemetry and thermal tracking.
-* **MinIO:** A lightweight, S3-compatible object storage container specifically targeting the Talos K3s `--etcd-s3` automated snapshots to protect the declarative cluster state from main-node NVMe corruption.
+* **MinIO:** A lightweight, S3-compatible object storage container utilized for backing up the Letta archival state and GitOps artifacts, while K3s state is natively backed up via the ClickHouse/PostgreSQL engine on the NUC to protect the declarative cluster state from main-node NVMe corruption.
 
 Because this node is continuously powered by an **Eaton 3S 550 DIN UPS**, it is completely shielded from sudden grid-power dropouts:
 

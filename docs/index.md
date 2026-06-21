@@ -31,7 +31,7 @@ Project Janus is built upon the foundational philosophy of **Constraint Engineer
 
 ## 🏗️ High-Level Cluster Topology
 
-The **Synapse Edge** topology partitions operations across two physical nodes bridged by a symmetric, high-speed 2.5G managed network. This logical separation ensures that the stateful telemetry and backup systems remain fully resilient, allowing the high-compute primary workstation to run as a stateless compute cluster that can recover instantly from abrupt grid-power dropouts.
+The **Synapse Edge** topology partitions operations across two physical nodes bridged by a symmetric, high-speed 2.5G managed network. This logical separation ensures that the stateful telemetry and backup systems remain fully resilient, allowing the high-compute primary workstation to run as a transactionally stateless (during active hours) compute cluster that can recover instantly from abrupt grid-power dropouts.
 
 ```mermaid
 flowchart TB
@@ -154,4 +154,4 @@ The chapters are structured to form a comprehensive, textbook-style guide. It is
     The primary compute workstation must remain transactionally stateless during active hours. Active runtime micro-writes and log traces are strictly banned from local disks and streamed to the UPS-protected NUC. The primary NVMe hosts only the daily-compiled, read-heavy Letta Archival state, which is reconstructed asynchronously by the NUC in the event of a power failure.
 
 !!! danger "No-Python Production Mandate"
-    All production-tier agent logic, gateway routing, and sandbox scheduling must be compiled natively in Rust or executed within embedded WASM environments. Python dependencies (`pip`, `venv`, packages) are strictly prohibited from entering the runtime plane and are isolated entirely to offline Model Fine-Tuning and Quantization-Aware Training (QAT) pipelines.
+    All production-tier agent logic, gateway routing, and sandbox scheduling must be compiled natively in Rust or executed within embedded WASM environments. Python dependencies (`pip`, `venv`, packages) are strictly prohibited from entering the active runtime plane. This mandate applies strictly to the cluster's active runtime/inference plane; offline developer tooling, pre-flight validation scripts (e.g., `validate_okf.py`), and documentation compilation are authorized to run locally via `uv`'s isolated Python environments.

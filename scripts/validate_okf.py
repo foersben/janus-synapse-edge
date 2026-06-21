@@ -129,14 +129,12 @@ def build_eval_context(global_state):
     context = {}
     for k, v in global_state.items():
         context[k] = dict_to_namespace(v)
-    # Also flatten and add leaf variables to context directly
+    # Also flatten and add dotted paths directly to context
     flat = flatten_dict(global_state)
     for k, v in flat.items():
         # Store full dotted paths (for exact lookup in expressions)
         context[k] = v
-        # Also store base leaf names (e.g. "ram_gb_total" for convenience)
-        leaf_name = k.split(".")[-1]
-        context[leaf_name] = v
+        # DO NOT store base leaf names to enforce dotted namespace paths
     return context
 
 
@@ -166,8 +164,8 @@ def evaluate_value(val, context):
             context[k] = dict_to_namespace(evaluated_val)
             if isinstance(evaluated_val, dict):
                 for flat_k, flat_v in flatten_dict(evaluated_val).items():
-                    context[flat_k] = flat_v
-                    context[flat_k.split(".")[-1]] = flat_v
+                    context[f"{k}.{flat_k}"] = flat_v
+                    # DO NOT store base leaf names to enforce dotted namespace paths
             else:
                 context[k] = evaluated_val
         return evaluated
@@ -330,7 +328,13 @@ def main() -> None:
                     if isinstance(check, str):
                         try:
                             result = eval_expr(check, context)
-                            if not result:
+                            if not isinstance(result, bool):
+                                msg = (
+                                    f"❌ {rel_path}: Constraint check '{check}' did not evaluate to a "
+                                    f"boolean constraint result (returned {type(result).__name__})."
+                                )
+                                global_errors.append(msg)
+                            elif not result:
                                 global_errors.append(
                                     f"❌ {rel_path}: Constraint check failure: {explain_failure(check, context)}"
                                 )
@@ -343,7 +347,13 @@ def main() -> None:
             if isinstance(check, str):
                 try:
                     result = eval_expr(check, context)
-                    if not result:
+                    if not isinstance(result, bool):
+                        msg = (
+                            f"❌ {rel_path}: Buffer check '{check}' did not evaluate to a "
+                            f"boolean constraint result (returned {type(result).__name__})."
+                        )
+                        global_errors.append(msg)
+                    elif not result:
                         global_errors.append(f"❌ {rel_path}: Buffer check failure: {explain_failure(check, context)}")
                 except Exception as e:
                     global_errors.append(f"❌ {rel_path}: Buffer check evaluation error: {check} ({e})")

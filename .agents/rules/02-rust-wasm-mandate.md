@@ -11,8 +11,8 @@ This rule file governs all workflows related to creating, modifying, or deployin
 ## Core Directives
 
 1. **No Python in Production:**
-   * Python is strictly prohibited in the production path.
-   * All production components and agent frameworks must be compiled natively in Rust using the **Rig Framework**.
+   * Python is strictly prohibited in the production runtime path. All active cluster execution and agent orchestration must be compiled natively in Rust using the **Rig Framework**.
+   * Offline developer tooling, pre-flight validation scripts (such as `validate_okf.py`), and documentation compilation are exempt from this mandate and are permitted to run locally via `uv`'s isolated Python environment.
 2. **WebAssembly Sandboxing:**
    * Custom agent tools and runtime scripts must be written in Rust, compiled to the WebAssembly target (`wasm32-wasi` or `wasm32-unknown-unknown`), and run inside the **Wasmtime** engine.
    * Spawning Docker containers or native OS processes for ephemeral code execution is strictly prohibited.
