@@ -36,15 +36,15 @@ The project identity is built on three pillars of the system's design:
 
 The core of this project is its exhaustive documentation, structured as a sequential engineering specification.
 
-1.  **[Physical Foundations](https://foersben.github.io/janus-synapse-edge/01.%20Physical%20Assembly%2C%20BIOS%20%26%20Bare-Metal%20Security/)**: Thermal clearances, 14700K undervolting, and DMA protection.
-2.  **[Cryptographic Boundary & Proxmox Sideloading](https://foersben.github.io/janus-synapse-edge/02.%20Debian%20Substrate%2C%20LUKS%20Encryption%20%26%20Proxmox%20Sideloading/)**: LUKS-native block encryption and Proxmox sideloading with human-in-the-loop protocols.
-3.  **[Hypervisor Optimization (Core Pinning)](https://foersben.github.io/janus-synapse-edge/03.%20Proxmox%20Kernel%20%26%20Hypervisor%20Optimization/)**: Real-time P-Core pinning, ZFS ARC tuning, and hugepages configs.
-4.  **[Talos Linux & K3s Topology](https://foersben.github.io/janus-synapse-edge/04.%20Virtualization%20%26%20Kubernetes%20%28Talos%20%2B%20K3s%29/)**: Immutable OS deployment for GitOps-managed compute VM.
-5.  **[Core AI Inference (The Dual-Engine)](https://foersben.github.io/janus-synapse-edge/05.%20Core%20AI%20Inference%20Deployment%20%28The%20Dual-Engine%29/)**: Coordinating llama.cpp speculative decoding (70B) and llama.cpp CPU/GPU split (7B).
-6.  **[Data Layer & Letta Memory](https://foersben.github.io/janus-synapse-edge/06.%20Data%20Layer%20%26%20Memory%20Substrate/)**: Letta cognitive memory virtualisation in local token-space, paged asynchronously via `io_uring`.
-7.  **[TensorZero Gateway & Network DMZ](https://foersben.github.io/janus-synapse-edge/07.%20API%20Gateway%2C%20Orchestration%20%26%20Network%20Firewall/)**: High-performance TensorZero gateway routing and secure Rig webhooks.
-8.  **[Rig Framework & WASM Sandboxing](https://foersben.github.io/janus-synapse-edge/08.%20Agent%20Workflows%20%26%20UI%20Layer/)**: Compiling Rust-native agents with Rig and spawning transient Wasmtime sandboxes.
-9.  **[Autonomous Idle-Loops & GEPA Dreaming](https://foersben.github.io/janus-synapse-edge/09.%20The%20Autonomous%20Dynamic%20_Idle-Loop_%20%26%20_Dreaming/)**: Letta state consolidation and Genetic-Pareto Prompt Evolution (GEPA).
+1. **[Physical Foundations](https://foersben.github.io/janus-synapse-edge/01.%20Physical%20Assembly%2C%20BIOS%20%26%20Bare-Metal%20Security/)**: Thermal clearances, 14700K undervolting, and DMA protection.
+2. **[Cryptographic Boundary & Proxmox Sideloading](https://foersben.github.io/janus-synapse-edge/02.%20Debian%20Substrate%2C%20LUKS%20Encryption%20%26%20Proxmox%20Sideloading/)**: LUKS-native block encryption and Proxmox sideloading with human-in-the-loop protocols.
+3. **[Hypervisor Optimization (Core Pinning)](https://foersben.github.io/janus-synapse-edge/03.%20Proxmox%20Kernel%20%26%20Hypervisor%20Optimization/)**: Real-time P-Core pinning, ZFS ARC tuning, and hugepages configs.
+4. **[Talos Linux & K3s Topology](https://foersben.github.io/janus-synapse-edge/04.%20Virtualization%20%26%20Kubernetes%20%28Talos%20%2B%20K3s%29/)**: Immutable OS deployment for GitOps-managed compute VM.
+5. **[Core AI Inference (The Dual-Engine)](https://foersben.github.io/janus-synapse-edge/05.%20Core%20AI%20Inference%20Deployment%20%28The%20Dual-Engine%29/)**: Coordinating llama.cpp speculative decoding (70B) and llama.cpp CPU/GPU split (7B).
+6. **[Data Layer & Letta Memory](https://foersben.github.io/janus-synapse-edge/06.%20Data%20Layer%20%26%20Memory%20Substrate/)**: Letta cognitive memory virtualisation in local token-space, paged asynchronously via `io_uring`.
+7. **[TensorZero Gateway & Network DMZ](https://foersben.github.io/janus-synapse-edge/07.%20API%20Gateway%2C%20Orchestration%20%26%20Network%20Firewall/)**: High-performance TensorZero gateway routing and secure Rig webhooks.
+8. **[Rig Framework & WASM Sandboxing](https://foersben.github.io/janus-synapse-edge/08.%20Agent%20Workflows%20%26%20UI%20Layer/)**: Compiling Rust-native agents with Rig and spawning transient Wasmtime sandboxes.
+9. **[Autonomous Idle-Loops & GEPA Dreaming](https://foersben.github.io/janus-synapse-edge/09.%20The%20Autonomous%20Dynamic%20_Idle-Loop_%20%26%20_Dreaming/)**: Letta state consolidation and Genetic-Pareto Prompt Evolution (GEPA).
 10. **[OTLP Telemetry & GitOps (ArgoCD)](https://foersben.github.io/janus-synapse-edge/10.%20Observability%2C%20Telemetry%20%26%20GitOps/)**: Async OTLP event tracing to ClickHouse on the NUC, and ArgoCD ConfigMap hot-reloading.
 11. **[Automated Healing & Disaster Recovery](https://foersben.github.io/janus-synapse-edge/11.%20Disaster%20Recovery%20%26%20Automated%20Healing/)**: Autonomic Rust Janitor Daemon, WASM sandboxes cleanup, and ClickHouse state replay.
 12. **[Multi-Tenant Privacy Tiers](https://foersben.github.io/janus-synapse-edge/12.%20Multi-Tenant%20Profiles%20%26%20Privacy%20Tiers/)**: Software-defined isolated Letta sandboxes, Hindsight 2.0 graph filtering, and resource priority classes.
@@ -83,8 +83,8 @@ Standard vector RAG is replaced with **Virtualized Cognitive Memory** (Core, Rec
 
 The cluster capitalizes on downtime. When the TensorZero watcher detects zero traffic and <5% utilization for 45 minutes, it triggers:
 
-1.  **Dreaming**: Letta memory consolidation, paging chronological Recall data into deep Archival tiers.
-2.  **Genetic Prompt Evolution (GEPA)**: Operating in Rig/Rust, the agent mutates prompt YAML configurations, runs benchmark sweeps inside secure Wasmtime sandboxes, and commits optimized YAML back to this repository via Gitea/ArgoCD.
+1. **Dreaming**: Letta memory consolidation, paging chronological Recall data into deep Archival tiers.
+2. **Genetic Prompt Evolution (GEPA)**: Operating in Rig/Rust, the agent mutates prompt YAML configurations, runs benchmark sweeps inside secure Wasmtime sandboxes, and commits optimized YAML back to this repository via Gitea/ArgoCD.
 
 ---
 
@@ -102,7 +102,7 @@ The AI landscape moves too fast for manual updates. This Mono-Repo is structured
 
 - **/infrastructure**: Cold-Restart files. Includes bare-metal recovery configs like `talos-machineconfig.yaml`.
 - **/cluster-tools**: The foundations: ArgoCD manifests, NVIDIA device plugins, and OpenEBS LocalPV storage classes.
-- **/apps**: Core execution engines and gateways (llama.cpp, TensorZero, AnythingLLM).
+- **/apps**: Core execution engines and gateways (llama.cpp, TensorZero).
 - **/agents**: High-velocity logic: WASM tool modules, Rig agent definitions, and System Prompts mapped to Kubernetes ConfigMaps for instant, zero-downtime hot-reloading.
 
 ---
