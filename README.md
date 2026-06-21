@@ -60,17 +60,17 @@ We maximize a Micro-ATX thermal envelope (Jonsbo Z20) by strictly fencing resour
 | Component | Specification | Role & Constraint Strategy |
 | :--- | :--- | :--- |
 | **Compute** | Intel i7-14700K (20 Cores) | Hard-capped to 180W. 8 P-Cores pinned for speculative verification; 10 E-Cores (Threads 16-25) with CPU affinity mask `0x03FF0000` for Rig, WASM, and gateway control planes, leaving threads 26-27 reserved for hypervisor decryption and storage overhead. |
-| **RAM** | 128GB DDR5 Crucial | Coordinated Dual-Layer Hugepages (84GB locked in Proxmox host, 56GB partitioned in Talos guest) for llama.cpp weights and Letta archival paging. |
+| **RAM** | 128GB DDR5 Crucial | Coordinated Dual-Layer Hugepages (84GB locked in Proxmox host, 84GB partitioned in Talos guest VM 1) for llama.cpp weights and Letta archival paging. |
 | **GPU** | ZOTAC RTX 5070 Ti (16GB) | Blackwell SM120 leveraging NVFP4 acceleration. |
 | **Network** | NETGEAR MS308E 2.5G | Prevents latency spikes in interactive loops during high-frequency trace synchronization. |
-| **Edge-Node** | Intel NUC10i5FNH | UPS-backed ClickHouse analytical database and timeseries VictoriaMetrics time-series store. |
+| **Edge-Node** | Intel NUC10i5FNH | UPS-backed resiliency node equipped with a Samsung SM863a 2TB enterprise SSD. Hosts the ClickHouse OTLP trace ledger, PostgreSQL (Kine datastore), cloudflared ingress tunnel, VictoriaMetrics, and Grafana. |
 
 ### **2. The "Dual-Engine" Inference Stack**
 
 Instead of a monolithic approach, the system uses a bifurcated, hardware-pinned inference pipeline:
 
 - **Engine A (Deep Planning):** **llama.cpp** hosts 4-bit GGUF 70B models. It utilizes **Multi-Token Prediction (MTP) Speculative Decoding**, loading a 1.5B/3B draft model inside VRAM to guess tokens, while the physical P-Cores verify guesses against the larger GGUF parameters cached in DDR5.
-- **Engine B (Reflexive Execution):** **llama.cpp** runs 7B models (e.g., Qwen2-VL) inside a **4.5GB VRAM static fence**, utilizing a heterogeneous split (CPU-bound vision projection) and declarative adapter swapping.
+- **Engine B (Reflexive Execution):** **llama.cpp** runs 7B models (e.g., Qwen2-VL) inside a **4.0GB VRAM static fence** (sharing a **4.5GB** GPU partition with Whisper STT), utilizing a heterogeneous split (CPU-bound vision projection) and declarative adapter swapping.
 
 ### **3. Virtualized Cognitive Memory Substrate**
 
@@ -91,7 +91,7 @@ The cluster capitalizes on downtime. When the TensorZero watcher detects zero tr
 ## **🛡️ Resilience & Zero-Trust Security**
 
 - **Crash-Safe Design**: Because the main server lacks a UPS, it is designed for failure. A custom **Rust Janitor Daemon** runs on boot, terminates stranded Wasmtime process handles, and replays transaction logs from the ClickHouse NUC database to restore the local Letta memory state.
-- **Air-Gapped Browsing**: Direct agent-to-web HTTP connections are banned. Scraping is delegated to Playwright inside `outbound-dmz` containers. Rig grabs page screenshots, passing the image buffer to Qwen2-VL (Engine B) for visual DOM parsing inside VRAM, protecting core AI logic from browser-exploit payloads.
+- **Air-Gapped Browsing**: Direct agent-to-web HTTP connections are banned. Scraping is delegated to a headless Chromium browser driven via CDP in the `outbound-dmz` namespace. Rig grabs page screenshots or clean HTML, passing the visual buffers to Engine B (Qwen2-VL) for visual layout parsing, protecting core AI logic from browser-exploit payloads.
 - **GitOps Management**: Every manifest is managed by **ArgoCD**. Prompts mutated by GEPA are pushed to `/prompts` and hot-reloaded declaratively by TensorZero in microseconds, preserving static VRAM caches.
 
 ---
@@ -119,13 +119,13 @@ Project Janus underwent a complete architectural modernization to transition fro
 
 | What Replaced What | Why It Was Changed (The Engineering Rationale) | Technical Outcome |
 | :--- | :--- | :--- |
-| **SurrealDB (on NUC)** $\rightarrow$ **Letta Memory (Local)** | Traversing a physical network bridge introduced millisecond latencies that stalled GPU execution. Graph databases suffered index corruption during ungraceful power failures. Letta virtualizes cognitive state locally. | Zero-latency, network-decoupled active memory loops. The Intel NUC is repurposed strictly for cold ClickHouse backups. |
+| **SurrealDB (on NUC)** $\rightarrow$ **Letta Memory (Local)** | Traversing a physical network bridge introduced millisecond latencies that stalled GPU execution. Graph databases suffered index corruption during ungraceful power failures. Letta virtualizes cognitive state locally. | Zero-latency, network-decoupled active memory loops. The Intel NUC is repurposed for ClickHouse OTLP logging, PostgreSQL Kine datastore, and telemetry/tunnel offloading. |
 | **ZFS Caching** $\rightarrow$ **Asynchronous `io_uring`** | Standard Linux kernel file operations forced costly CPU context-switches and virtualization scheduling overhead during huge database sweeps. | Zero-copy DMA streams GGUF weights and Letta archival pages at near-native NVMe speeds ($3,500\text{ MB/s+}$) under LUKS block decryption. |
 | **CrewAI / Agent Zero** $\rightarrow$ **Rust-native Rig Framework** | Python orchestration stacks consumed $2\text{ GB+}$ of system memory and introduced stop-the-world garbage collection pauses, stalling the reflex loops. | Pinned strictly to the **10 Intel E-Cores (Threads 16–25)** using CPU affinity mask `0x03FF0000` (leaving threads 26-27 reserved for hypervisor LUKS and ZFS overhead), the entire agent control plane executes inside a **$<150\text{ MB}$ RSS memory fence**. |
 | **Docker Sandboxing** $\rightarrow$ **WebAssembly (Wasmtime)** | Spawning Docker containers for ephemeral tool execution took seconds, consumed massive RAM, and left corrupted loopback network interfaces on crash. | Confined linear memory sandboxes spin up in **$<10\text{ ms}$**, executing code in microseconds with immediate resource reclamation. |
 | **PowerInfer Inference** $\rightarrow$ **llama.cpp Speculative Decoding** | Modern LLMs abandoned ReLU for SwiGLU, making PowerInfer's activation sparsity obsolete. Single-threaded FP16 loading on consumer GPUs is bandwidth-blocked. | Multi-Token Prediction (MTP) speculative decoding (1.5B draft in VRAM, full verification on **8 physical P-Cores**) delivers **$15\text{-}20\text{+ t/s}$** on 70B models. |
 | **LiteLLM / n8n Gateways** $\rightarrow$ **TensorZero Rust Gateway** | LiteLLM added heavy memory footprints and execution overhead. Manual JSON/prompt routing logic was hard-coded in Python scripts. | Unified Rust gateway delivers sub-millisecond declarative routing (`tensorzero.yaml`), ConfigMap hot-reloading, and OTLP ClickHouse streams. |
-| **NemoVision Visual MCP** $\rightarrow$ **Air-Gapped Playwright + Qwen2-VL** | Direct DOM parsers exposed the cluster to browser exploits. Independent multi-modal OCR pods saturated system VRAM. | Qwen2-VL runs inside Engine B's **$4.5\text{ GB}$ static VRAM fence** using a llama.cpp heterogeneous split to offload vision patches to CPU/RAM. |
+| **NemoVision Visual MCP** $\rightarrow$ **Air-Gapped Headless CDP + Qwen2-VL** | Direct DOM parsers exposed the cluster to browser exploits. Independent multi-modal OCR pods saturated system VRAM. | Qwen2-VL runs inside Engine B's **4.0 GB** static VRAM fence (sharing a 4.5 GB partition with Whisper STT) using a llama.cpp heterogeneous split to offload vision patches to CPU/RAM. |
 | **Python Janitor Daemon** $\rightarrow$ **Autonomic Rust Janitor** | The legacy Python daemon was slow to load and relied on cleaning up Docker networks, risking network fragmentation on boot. | Compiled Rust binary executes WASM process handle cleanups and replays all ClickHouse transaction logs generated since the last daily storage flush. |
 
 ---
