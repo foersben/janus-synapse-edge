@@ -11,6 +11,12 @@
 * Every `.md` file must begin with valid YAML frontmatter containing `type`, `dependencies`, and `exports`.
 * If you modify a hardware specification (e.g., changing VRAM allocations), you MUST update the mathematical `exports` in the OKF frontmatter so the validation scripts pass.
 
+### Symlinked Memory Protocol
+
+- The architectural context map at `.roo/memory/okf_state_map.md` (or `.cline/context/okf_state_map.md`) is a symbolic link pointing to the central `.agents/memory/architecture_state_map.md` substrate.
+- When executing **Phase 1 (Discovery)**, read this file directly to parse existing parameters.
+- When executing **Phase 3 (Mass Refactor)**, if any global constraints are updated, overwrite the file contents *without* deleting or breaking the underlying symlink file system handle.
+
 ## 3. Toolchain
 
 * Python is strictly reserved for the `uv` toolchain to run `zensical` (documentation) and `pre-commit` hooks.

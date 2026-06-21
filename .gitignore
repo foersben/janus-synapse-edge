@@ -82,3 +82,5 @@ Models are managed via OpenEBS/LocalPV and shouldn't be in Git
 
 un*.sh*
 Project Janus 2026 Architecture Canvas.md
+connect-live.sh
+note.sh
