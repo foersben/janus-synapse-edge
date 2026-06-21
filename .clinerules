@@ -1,0 +1,32 @@
+# Janus Synapse Edge: AI Agent Directives
+
+## 1. Architectural Mandates
+
+* **No-Python Production:** This cluster runs exclusively on Rust, WASM, and Talos Linux. You must NEVER suggest, write, or implement Python code for the production runtime.
+* **Hardware Constraints:** The system is bounded by an Intel i7-14700K (28 threads), 128GB RAM, and a single RTX 5070 Ti (16GB VRAM). Never violate these physical limits.
+
+## 2. Documentation Standards (OKF)
+
+* This is a Open Knowledge Format (OKF) repository.
+* Every `.md` file must begin with valid YAML frontmatter containing `type`, `dependencies`, and `exports`.
+* If you modify a hardware specification (e.g., changing VRAM allocations), you MUST update the mathematical `exports` in the OKF frontmatter so the validation scripts pass.
+
+## 3. Toolchain
+
+* Python is strictly reserved for the `uv` toolchain to run `zensical` (documentation) and `pre-commit` hooks.
+* Always run `just validate` after modifying architectural markdown files to ensure the math still holds.
+
+## 🛑 CRITICAL GIT & GPG BOUNDARY
+
+You are operating in an environment protected by strict cryptographic rules. You are physically incapable of completing a `git commit` because the repository enforces GPG signatures, which require human biometric/hardware interaction.
+
+If you attempt to commit, the terminal will hang or fail. Therefore, you must obey the following mandates:
+
+1. **NEVER BYPASS SECURITY:** You are strictly prohibited from using `git commit --no-verify`, `git commit --no-gpg-sign`, or attempting to bypass pre-commit hooks.
+2. **NEVER MUTATE CONFIG:** You are strictly prohibited from modifying `git config user.email` or `git config commit.gpgsign`.
+3. **THE HUMAN HANDOFF PROTOCOL:** When you have completed a task and are ready to commit, do exactly the following:
+   * Run `git add .` to stage the files.
+   * Run `just validate` to ensure the OKF math holds.
+   * Write a detailed commit message.
+   * **STOP.** Do not run `git commit`.
+   * Output the following message to the user: *"Task complete. Files are staged. Please run `git commit` manually in your terminal to apply your GPG signature. Commit Message: [Paste your commit message here]"*

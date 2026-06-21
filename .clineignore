@@ -1,0 +1,7 @@
+# Prevent the AI from hallucinating inside its own brain or the Python env
+.venv/
+.agents/
+site/
+.git/
+__pycache__/
+.secrets.baseline

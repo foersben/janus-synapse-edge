@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: docs-consistency-checker
 description: Validates documentation edits against the Janus Synapse Edge core architecture constraints. Ensures scientific tone and deep architectural alignment before generating textbook-style explanations.
 ---

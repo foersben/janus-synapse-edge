@@ -1,31 +1,43 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
 name = "janus-synapse-edge"
 version = "1.0.0"
 description = "Dual-engine autonomous AI cluster running on constraint-optimized hardware."
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 
-# Core dependencies for the Janus agents and orchestration
+# CRITICAL: Production AI is Rust-Native.
+# Python is strictly reserved for OKF Validation, Docs, and GitOps scripting.
 dependencies = [
-    "crewai>=0.100.0",
-    "dspy-ai>=2.4.0",
-    "litellm>=1.35.0",
-    "surrealdb>=0.3.0",
-    "prometheus-client>=0.20.0",
+    "pyyaml>=6.0.2",
+    "pydantic>=2.10.0", # Highly recommended for OKF schema validation
 ]
 
-[project.optional-dependencies]
-docs = ["zensical>=0.0.40", "mkdocs-material>=9.5.0"]
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
 [tool.uv]
-# CRITICAL: Disables the requirement to build the project as a package.
-# This fixes the "Unable to determine which files to ship" build error.
-package = false
+package = false # Disables Python package building for this documentation repo
 managed = true
 
 [dependency-groups]
-dev = ["pre-commit>=4.6.0", "zensical>=0.0.40", "mkdocs-material>=9.5.0"]
+dev = [
+    "pytest>=8.3.0",
+    "ruff>=0.9.0",
+    "mypy>=1.14.0",
+    "pre-commit>=4.0.0",
+    "zensical>=0.0.45",
+    "types-PyYAML>=6.0.12",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "B", "UP", "N"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+ignore_missing_imports = true

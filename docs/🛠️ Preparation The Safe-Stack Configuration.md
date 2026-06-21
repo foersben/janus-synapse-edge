@@ -1,3 +1,17 @@
+---
+type: DeploymentBlueprint
+title: "Preparation: The Safe-Stack Configuration"
+dependencies:
+  - ref: docs/04. Virtualization & Kubernetes (Talos + K3s).md
+    constraint_check:
+      - host_hugepages_allocation_gb == vm1_tensor_worker.vm1_hugepages_gb
+exports:
+  host_hugepages_allocation_gb: 84
+  telemetry_node: "Intel NUC10i5FNH"
+  ups_target: "Eaton 3S 550 DIN"
+tags: [ClickHouse, VictoriaMetrics, MinIO, Resilience]
+---
+
 # Preparation: The "Safe-Stack" Configuration
 
 The Janus architecture relies on a specialized **"Hybrid-Resilience" Configuration**. While the primary high-performance compute node operates on a strict "Crash-Safe" philosophy—eschewing a costly, high-wattage Uninterruptible Power Supply (UPS)—the critical Data and Telemetry Layer is physically isolated and fully protected. This methodology maximizes data consistency, prevents transaction ledger corruption, and significantly extends the operational lifespan of the non-volatile memory express (NVMe) drives.

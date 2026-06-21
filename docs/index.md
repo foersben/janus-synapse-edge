@@ -1,3 +1,9 @@
+---
+type: DocumentationIndex
+title: "Project Janus: Synapse Edge 2026"
+tags: [Janus, Index, Overview]
+---
+
 # Project Janus: Synapse Edge 2026
 
 **The Definitive Engineering Specification for Autonomous AI Orchestration.**

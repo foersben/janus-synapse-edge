@@ -1,4 +1,5 @@
 ---
+type: Rules
 trigger: glob
 globs: docs//*.md
 ---

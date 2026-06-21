@@ -1,4 +1,5 @@
 ---
+type: SOP
 description: Systematically transforms draft documentation into a highly detailed, scientific textbook format with complex Mermaid diagrams, without hallucinating architectures.
 ---
 
