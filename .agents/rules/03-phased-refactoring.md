@@ -6,6 +6,8 @@ description: Invoke this protocol whenever the user requests a "global documenta
 
 # SKILL: The 3-Phase Architecture Refactor Protocol
 
+**Trigger:** Invoke this protocol whenever the user requests a "global documentation update", "architecture refactor", "schema upgrade", or changes affecting more than 3 interdependent markdown/configuration files.
+
 **Core Philosophy:** LLMs hallucinate variables and break dependency chains if forced to mass-edit multiple files in a single prompt. You MUST execute widespread changes in these 3 strict, sequential phases. You must STOP and ask for user approval between each phase.
 
 ## PHASE 1: Discovery & State Mapping (Read-Only)

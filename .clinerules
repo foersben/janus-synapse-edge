@@ -36,3 +36,9 @@ If you attempt to commit, the terminal will hang or fail. Therefore, you must ob
    * Write a detailed commit message.
    * **STOP.** Do not run `git commit`.
    * Output the following message to the user: *"Task complete. Files are staged. Please run `git commit` manually in your terminal to apply your GPG signature. Commit Message: [Paste your commit message here]"*
+
+## 4. Rule Files Index & Triggers
+
+* **[01-hardware-constraints.md](file:///home/benni/Documents/antigravity_workspace/janus-synapse-edge/.agents/rules/01-hardware-constraints.md):** Governs system memory, CPU pinning, and storage configurations. Enforces the 84GB Hugepage lock and the 4GB host buffer check.
+* **[02-rust-wasm-mandate.md](file:///home/benni/Documents/antigravity_workspace/janus-synapse-edge/.agents/rules/02-rust-wasm-mandate.md):** Dictates tool creation workflow. Enforces Rust compilation to WASM target running on Wasmtime.
+* **[03-phased-refactoring.md](file:///home/benni/Documents/antigravity_workspace/janus-synapse-edge/.agents/rules/03-phased-refactoring.md):** Codifies the 3-Phase Refactoring Protocol. Triggered whenever changes affect more than 3 files.

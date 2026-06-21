@@ -19,9 +19,10 @@ format:
     uv run ruff format scripts/
     uv run ruff check --fix scripts/
 
-# Mathematically validate all hardware constraints
+# Mathematically validate all hardware constraints and run markdown linters
 validate:
     uv run python scripts/validate_okf.py ./docs
+    uv run pre-commit run markdownlint --all-files
 
 # Build the documentation site (Output: ./site)
 docs:
