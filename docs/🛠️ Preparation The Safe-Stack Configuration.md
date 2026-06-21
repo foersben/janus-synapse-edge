@@ -9,7 +9,11 @@ exports:
   host_hugepages_allocation_gb: 84
   telemetry_node: "Intel NUC10i5FNH"
   ups_target: "Eaton 3S 550 DIN"
-tags: [ClickHouse, VictoriaMetrics, MinIO, Resilience]
+tags:
+  - ClickHouse
+  - VictoriaMetrics
+  - MinIO
+  - Resilience
 ---
 
 # Preparation: The "Safe-Stack" Configuration

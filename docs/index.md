@@ -3,7 +3,10 @@ type: DocumentationIndex
 title: "Project Janus: Synapse Edge 2026"
 dependencies: []
 exports: {}
-tags: [Janus, Index, Overview]
+tags:
+  - Janus
+  - Index
+  - Overview
 ---
 
 # Project Janus: Synapse Edge 2026
