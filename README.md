@@ -9,7 +9,7 @@
 ## **🎥 Technical Deep Dive: The Janus Concept**
 
 > [!TIP]
-> **Executive Summary:** This AI-synthesized architectural briefing provides a high-fidelity conceptual summary of Project Janus. It explores the **Constraint Engineering** conflict and the subsequent implementation of the **Dual-Engine inference stack** and **local virtualized memory substrates**.
+> **Summary:** This AI-synthesized architectural briefing provides a high-fidelity conceptual summary of Project Janus. It explores the **Constraint Engineering** conflict and the subsequent implementation of the **Dual-Engine inference stack** and **local virtualized memory substrates**.
 >
 > <div align="center">
 > <video src="https://github.com/user-attachments/assets/6bbdf2fa-93d3-4994-b12f-b6944c4dd21f" width="60%" controls>
